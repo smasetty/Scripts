@@ -21,6 +21,12 @@ Plugin 'honza/vim-snippets'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'Tuxdude/mark.vim'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'junegunn/fzf.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'ternjs/tern_for_vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'digitaltoad/vim-pug'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
@@ -53,16 +59,31 @@ set nowb
 set autoindent
 set smartindent
 set smarttab
-set shiftwidth=2
-set softtabstop=2
-set tabstop=2
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
 set expandtab
 set nu        "line no.s
 set hlsearch   
 set incsearch
 set showmatch
 set colorcolumn=80
+set mouse=a
+set showmode           
+set nowrap 
+set nowrapscan
+set ruler
+set title
+set ignorecase
+set smartcase
+set wildmode=list:longest
+set noswapfile
+set backupcopy=no     
+set autowrite
 highlight ColorColumn guibg=black
+"http://stackoverflow.com/questions/14635295/vim-takes-a-very-
+"long-time-to-start-up
+set clipboard=exclude:.*
 
 " Display tabs and trailing spaces visually
 "set list listchars=tab:\ \ ,trail:Â·
@@ -78,6 +99,13 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" A few shortcuts to make life easy
+noremap <Leader>s :update<CR>
+noremap <C-S> :update<CR>
+inoremap <c-s> <c-o>:update<CR>
+vmap <C-s> <esc>:w<CR>gv
+map Q :qa<CR>
+
 set scrolloff=8
 set sidescrolloff=15
 set sidescroll=1
@@ -90,12 +118,12 @@ else
   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
-set foldmethod=manual
+"set foldmethod=manual
 "folding options
-vnoremap zz zf
-inoremap zz <Esc>zaki
-nnoremap zz za
-inoremap \zB <Esc>vaBzf
+"vnoremap zz zf
+"inoremap zz <Esc>zaki
+"nnoremap zz za
+"inoremap \zB <Esc>vaBzf
 
 "Visually select a string and search
 vnoremap // y/<C-R>"<CR>
@@ -104,7 +132,6 @@ vnoremap // y/<C-R>"<CR>
 
 set splitbelow
 set splitright
-
 
 "Use the plugin provided YouCompleteMe settings for now
 let g:ycm_global_ycm_extra_conf="/Users/sharatmasetty/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
@@ -117,10 +144,18 @@ nmap <F2> :TagbarToggle<CR>
 syntax enable
 syntax on 
 set noshowmode
+
 "Molokai settings
 set background=dark
 colorscheme molokai
 set t_Co=256
+"If working with Tmux then add this to your bashrc
+"alias tmux="TERM=screen-256color-bce tmux"
+"add this to your tmux configuration file
+"set -g default-terminal xterm"
+if has('unix')
+   set t_Co=256
+endif
 let g:molokai_original = 1
 "let g:rehash256 = 1
 
@@ -183,3 +218,22 @@ endif
 
 au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
 au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>"
+
+"AutoPairs plugin
+let g:AutoPairsFlyMode = 0
+let g:AutoPairsShortcutBackInsert = '<M-b>'
+inoremap <C-e> <Esc>A
+inoremap <C-a> <Esc>I
+
+"Airline issues
+
+let g:airline_section_c = '%t'
+let g:airline_section_y = ''
+let g:airline_section_warning = ''
+
+"NERDtree
+map <silent> <C-n> :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+let NERDTreeShowBookmars=1
